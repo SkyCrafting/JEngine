@@ -24,9 +24,8 @@ public class PlayerHandler {
         handler = instance.getHandler();
     }
 
-    //instance.getNetwork().send(p.getX() + "~" + p.getY() + "~");
     private final int speed = 5;
-    
+
     private boolean blockedInput = false;
 
     public void update() {
@@ -41,20 +40,33 @@ public class PlayerHandler {
             if (handler.getKey(KeyEvent.VK_W)) {
                 velY = -speed;
                 p.setDirection(Player.Direction.UP);
+                if(instance.isInit()){
+            instance.getNetwork().getPacketSender().sendPosition(p, p.getX(), p.getY());
+        }
             }
             if (handler.getKey(KeyEvent.VK_S)) {
                 velY = speed;
                 p.setDirection(Player.Direction.DOWN);
+                if(instance.isInit()){
+            instance.getNetwork().getPacketSender().sendPosition(p, p.getX(), p.getY());
+        }
             }
             if (handler.getKey(KeyEvent.VK_A)) {
                 velX = -speed;
                 p.setDirection(Player.Direction.RIGHT);
+                if(instance.isInit()){
+            instance.getNetwork().getPacketSender().sendPosition(p, p.getX(), p.getY());
+        }
             }
             if (handler.getKey(KeyEvent.VK_D)) {
                 velX = speed;
                 p.setDirection(Player.Direction.LEFT);
+                if (instance.isInit()) {
+                    instance.getNetwork().getPacketSender().sendPosition(p, p.getX(), p.getY());
+                }
             }
         }
+
     }
 
     private int score = 0;

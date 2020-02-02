@@ -53,7 +53,7 @@ public class Player extends Entity {
         }
         this.playerHandler = new PlayerHandler(instance, this);
 
-        chat = new PlayerChat(instance);
+        chat = new PlayerChat(this, instance);
     }
 
     public PlayerChat getChat() {
@@ -115,7 +115,7 @@ public class Player extends Entity {
 
     @Override
     public void render(Graphics2D g) {
-        g.translate((int) -TheEngine.instance.getCamera().getxOffSet(), (int) -TheEngine.instance.getCamera().getyOffSet());
+       // g.translate((int) -TheEngine.instance.getCamera().getxOffSet(), (int) -TheEngine.instance.getCamera().getyOffSet());
         spriteMap.get(direction).render(g, getRenderX(), getRenderY());
     }
 

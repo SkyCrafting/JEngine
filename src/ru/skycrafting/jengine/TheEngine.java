@@ -1,6 +1,5 @@
 package ru.skycrafting.jengine;
 
-import ru.skycrafting.jengine.world.player.PlayerChat;
 import ru.skycrafting.jengine.graphics.TextureAtlas;
 import ru.skycrafting.jengine.network.Connector;
 import ru.skycrafting.jengine.windows.MainWindow;
@@ -24,6 +23,8 @@ public class TheEngine {
     private Player thePlayer;
     private String thePlayerName;
     private Connector network;
+    private boolean initAllPlayers = false;
+    private int onlinePlayers = 0;
 
     public Player getThePlayer() {
         return thePlayer;
@@ -46,13 +47,20 @@ public class TheEngine {
 
     }
 
+    private boolean init = false;
+
     private void initPlayer() {
         int playerX = 63, playerY = 60;
         thePlayerName = "Mudak_" + getRandomNumber(1, 5000);
         thePlayer = new Player(instance, thePlayerName, playerX, playerY);
         getWorld().getPlayerManager().addPlayer(thePlayerName, thePlayer);
         network = new Connector(instance, "192.168.100.3", 25565, thePlayerName);
-        network.send("login:" + playerX + ":" + playerY + ":");
+        network.getPacketSender().sendLogin(thePlayer);
+        init = true;
+    }
+
+    public boolean isInit() {
+        return init;
     }
 
     public String getThePlayerName() {
@@ -89,5 +97,21 @@ public class TheEngine {
 
     public InputHandler getHandler() {
         return handler;
+    }
+
+    public boolean isInitAllPlayers() {
+        return initAllPlayers;
+    }
+
+    public void setInitAllPlayers(boolean initAllPlayers) {
+        this.initAllPlayers = initAllPlayers;
+    }
+
+    public int getOnlinePlayers() {
+        return onlinePlayers;
+    }
+
+    public void setOnlinePlayers(int onlinePlayers) {
+        this.onlinePlayers = onlinePlayers;
     }
 }

@@ -24,10 +24,9 @@ public class Sender {
         this.port = port;
     }
 
-    public void sendMessage(String str) {
+    public void sendMessage(byte[] packet) {
         try {
-            byte[] data = str.getBytes();
-            DatagramPacket pack = new DatagramPacket(data, data.length, InetAddress.getByName(host), port);
+            DatagramPacket pack = new DatagramPacket(packet, packet.length, InetAddress.getByName(host), port);
             ds.send(pack);
         } catch (IOException e) {}
     }

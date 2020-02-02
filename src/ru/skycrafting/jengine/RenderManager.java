@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
 import java.util.Map;
 import ru.skycrafting.jengine.world.Loader.tile.Tile;
 import ru.skycrafting.jengine.world.player.Player;
@@ -18,7 +17,6 @@ public class RenderManager {
 
     private final TheEngine instance;
     private int width, height;
-    private Graphics g;
 
     public RenderManager(TheEngine instance) {
         this.instance = instance;
@@ -42,27 +40,16 @@ public class RenderManager {
             instance.getWindow().createBufferStrategy(3);
             return;
         }
-        g = bs.getDrawGraphics();
+        Graphics g = bs.getDrawGraphics();
         g.setColor(Color.DARK_GRAY);
         g.fillRect(0, 0, width, height);
         /*<-- RENDER -->*/
 
         instance.getWorld().getLoader().render(g);
 
-        g.translate((int) instance.getCamera().getxOffSet(), (int) TheEngine.instance.getCamera().getyOffSet());
-
-        PlayerManager pManager = instance.getWorld().getPlayerManager();
-        for (Map.Entry<String, Player> e : pManager.getPlayers().entrySet()) {
-            Player p = e.getValue();
-            String name = e.getKey();
-            p.render((Graphics2D) g);
-
-            if (name.contains(instance.getThePlayerName())) {
-                renderName(p, name, Color.green, 15, 7);
-                p.getChat().render(height, width, g);
-            } else {
-                renderName(p, name, Color.red, 15, 7);
-            }
+        //    g.translate((int) instance.getCamera().getxOffSet(), (int) TheEngine.instance.getCamera().getyOffSet());
+        if (instance.isInitAllPlayers()) {
+            renderPlayers(g);
         }
 
         renderGui(g);
@@ -72,13 +59,31 @@ public class RenderManager {
         g.dispose();
     }
 
-    private void renderName(Player p, String name, Color c, int x, int y) {
-        g.setColor(new Color(0.0f, 0.0f, 0.0f, 0.73f));
-        g.fillRect(((int) p.getRenderX() - 12) - x, ((int) p.getRenderY() - 13) - y, (name + " (Вы)").length() * 7, 18);
-        g.setColor(c);
-        g.drawString(name + " (Вы)", ((int) p.getRenderX() - 10) - x, ((int) p.getRenderY()) - y);
+    private void renderPlayers(Graphics g) {
+        PlayerManager pManager = instance.getWorld().getPlayerManager();
+        for (Map.Entry<String, Player> e : pManager.getPlayers().entrySet()) {
+            Player p = e.getValue();
+            String name = e.getKey();
+            p.render((Graphics2D) g);
+
+            if (name.contains(instance.getThePlayerName())) {
+                renderName(g, p, name + " [Вы]", Color.green, 15, 7);
+            } else {
+                renderName(g, p, name, Color.red, 15, 7);
+            }
+
+            //  p.getChat().render(height, width, g);
+        }
     }
 
+    private void renderName(Graphics g, Player p, String name, Color c, int x, int y) {
+        int dlina = g.getFontMetrics().stringWidth(name) + 5;
+
+        g.setColor(new Color(0.0f, 0.0f, 0.0f, 0.73f));
+        g.fillRect(((int) p.getRenderX() - 12) - x, ((int) p.getRenderY() - 13) - y, dlina, 18);
+        g.setColor(c);
+        g.drawString(name, ((int) p.getRenderX() - 10) - x, ((int) p.getRenderY()) - y);
+    }
 
     private void renderGui(Graphics g) {
         g.setColor(new Color(0.0f, 0.0f, 0.0f, 0.73f));
@@ -88,14 +93,16 @@ public class RenderManager {
         apple.render((Graphics2D) g, 10, 10);
         g.drawString("Score: " + instance.getThePlayer().getPlayerHandler().getScore() + "/" + maxApple, 50, 30);
     }
-    
+
     public void update() {
         instance.getWorld().getLoader().update();
 
-        PlayerManager pManager = TheEngine.instance.getWorld().getPlayerManager();
-        for (Map.Entry<String, Player> e : pManager.getPlayers().entrySet()) {
-            Player p = e.getValue();
-            p.update();
+        if (instance.isInitAllPlayers()) {
+            PlayerManager pManager = TheEngine.instance.getWorld().getPlayerManager();
+            for (Map.Entry<String, Player> e : pManager.getPlayers().entrySet()) {
+                Player p = e.getValue();
+                p.update();
+            }
         }
     }
 }

@@ -18,14 +18,14 @@ public class Packet {
     }
     
     public void sendLogin(Player p){
-        c.send("packet:" + p.getName() + ":login");
+        c.send("packet:" + p.getName() + ":login:" + p.getX() + ":" + p.getY() + ":");
     }
 
     public void sendPosition(Player p, float x, float y) {
-        c.send("packet:" + p.getName() + ":pos~" + x + "~" + y + "~");
+        c.send("packet:" + p.getName() + ":pos:" + x + ":" + y + ":");
     }
 
     public void sendMessage(Player p, String msg) {
-        c.send("packet:" + p.getName() + ":msg~" + msg + "~");
+        c.send("packet:" + p.getName() + ":msg:" + msg.replace(":", "{u06DE}") + ":");
     }
 }
