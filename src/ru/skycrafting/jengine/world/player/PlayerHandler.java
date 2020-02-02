@@ -24,9 +24,8 @@ public class PlayerHandler {
         handler = instance.getHandler();
     }
 
-    //instance.getNetwork().send(p.getX() + "~" + p.getY() + "~");
     private final int speed = 5;
-    
+
     private boolean blockedInput = false;
 
     public void update() {
@@ -35,7 +34,6 @@ public class PlayerHandler {
         }
         p.setX(p.getX() + velX);
         p.setY(p.getY() + velY);
-
         collision();
         if (!blockedInput) {
             if (handler.getKey(KeyEvent.VK_W)) {
@@ -55,6 +53,7 @@ public class PlayerHandler {
                 p.setDirection(Player.Direction.LEFT);
             }
         }
+
     }
 
     private int score = 0;

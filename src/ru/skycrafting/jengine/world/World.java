@@ -16,10 +16,12 @@ public class World{
     private final WorldLoader loader;
     private final TileManager tileManager;
     private final PlayerManager playerManager;
+    public static int size = 1;
+    
     
     public World() {
         tileManager = new TileManager();
-        loader = new WorldLoader(50);
+        loader = new WorldLoader(100);
         playerManager = new PlayerManager();
     }
 

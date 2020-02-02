@@ -4,7 +4,6 @@
 package ru.skycrafting.jengine;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;

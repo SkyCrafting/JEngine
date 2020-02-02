@@ -26,15 +26,15 @@ public class Player extends Entity {
     private float x, y;
     protected TheEngine instance;
 
-    private static Direction direction;
-    private static Map<Direction, Sprite> spriteMap;
+    private Direction direction;
+    private Map<Direction, Sprite> spriteMap;
     private final PlayerHandler playerHandler;
     private final PlayerChat chat;
 
     private final int ZOOM = 2;
 
     public void setDirection(Direction direction) {
-        Player.direction = direction;
+        this.direction = direction;
     }
 
     public Player(TheEngine instance, String name, float x, float y) {
@@ -53,7 +53,7 @@ public class Player extends Entity {
         }
         this.playerHandler = new PlayerHandler(instance, this);
 
-        chat = new PlayerChat(instance);
+        chat = new PlayerChat(this, instance);
     }
 
     public PlayerChat getChat() {
@@ -101,6 +101,25 @@ public class Player extends Entity {
         return direction;
     }
 
+    public static Direction getDirectionByName(String name) {
+        switch (name) {
+            case "UP":{
+                return Direction.UP;
+            }
+            case "DOWN":{
+                return Direction.DOWN;
+            }
+            case "LEFT":{
+                return Direction.LEFT;
+            }
+            case "RIGHT":{
+                return Direction.RIGHT;
+            }
+            default:
+                return Direction.UP;
+        }
+    }
+
     public float getRenderX() {
         return this.getX() - instance.getCamera().getxOffSet();
     }
@@ -115,7 +134,10 @@ public class Player extends Entity {
 
     @Override
     public void render(Graphics2D g) {
-        g.translate((int) -TheEngine.instance.getCamera().getxOffSet(), (int) -TheEngine.instance.getCamera().getyOffSet());
+        // g.translate((int) -TheEngine.instance.getCamera().getxOffSet(), (int) -TheEngine.instance.getCamera().getyOffSet());
+        if (!getName().contains(instance.getThePlayerName())) {
+            //    spriteMap.get(direction).render(g, getRenderX(), getRenderY());
+        }
         spriteMap.get(direction).render(g, getRenderX(), getRenderY());
     }
 

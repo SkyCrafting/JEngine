@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import ru.skycrafting.jengine.TheEngine;
 
 /**
  *
@@ -14,7 +15,7 @@ import javax.imageio.ImageIO;
  */
 public class ResLoader {
 
-    public static final String PATH = "C:\\Users\\SkyCrafting_\\Desktop\\NETBEANS\\The Engine_2\\res" + File.separator;
+    public static final String PATH = TheEngine.instance.getEngineDirectory() + File.separator;
 
     public static BufferedImage loadImage(String filleName) {
         BufferedImage image = null;
