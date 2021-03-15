@@ -1,4 +1,4 @@
 # JEngine
 Java Game Engine
 
-DEPRECATED!
+This engine is deprecated!
